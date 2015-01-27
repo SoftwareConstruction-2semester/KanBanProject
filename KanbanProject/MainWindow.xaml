@@ -1,0 +1,89 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+        xmlns:local="clr-namespace:KanbanProject" x:Class="KanbanProject.MainWindow"
+        Title="MainWindow" Height="501.642" Width="724.403">
+
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal"> 
+            <Button Command="{Binding AddSticker}" CommandParameter="{Binding ToDoList}" Content="Add Sticker" Margin="2"></Button>
+            <Button Content="dsghfg" Margin="2"></Button>
+            <Button Content="dsghfg" Margin="2"></Button>
+        </StackPanel>
+        
+        <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0" ItemsSource="{Binding ToDoCategory}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Height="320" Fill="CornflowerBlue"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListView VerticalAlignment="Top" Grid.Column="0" ItemsSource="{Binding ToDoList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Height="60" Width="150" Stroke="DarkBlue" Fill="{Binding ColorBrush}"/>
+                        <Label Content="{Binding Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListBox Grid.Column="1" ItemsSource="{Binding DoingCategory}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Height="320" Fill="CornflowerBlue"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListView VerticalAlignment="Top" Grid.Column="1" ItemsSource="{Binding DoingList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Height="60" Width="150" Stroke="DarkBlue" Fill="{Binding ColorBrush}"/>
+                        <Label Content="{Binding Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListBox Grid.Column="2" ItemsSource="{Binding DoneCategory}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Height="320" Fill="CornflowerBlue"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListView VerticalAlignment="Top" Grid.Column="2" ItemsSource="{Binding DoneList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Height="60" Width="150" Stroke="DarkBlue" Fill="{Binding ColorBrush}"/>
+                        <Label Content="{Binding Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+    </Grid>
+</Window>
