@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,25 +12,26 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
+using Newtonsoft.Json;
 
 namespace KanbanProject
 {
     class MainViewModel : INotifyPropertyChanged, IDropTarget
     {
-        
-        
         private string _inputStickerName;
         private ObservableCollection<ObservableCollection<PostIt>> _categoryCollection;
         ObservableCollection<CategoryViewModel> todoCategory = new ObservableCollection<CategoryViewModel>();
         ObservableCollection<CategoryViewModel> doingCategory = new ObservableCollection<CategoryViewModel>();
         ObservableCollection<CategoryViewModel> doneCategory = new ObservableCollection<CategoryViewModel>();
-        private ObservableCollection<PostIt> _toDoList;
-        private ObservableCollection<PostIt> _doingList;
-        private ObservableCollection<PostIt> _doneList;
+        private static ObservableCollection<PostIt> _toDoList;
+        private static ObservableCollection<PostIt> _doingList;
+        private static ObservableCollection<PostIt> _doneList;
         private CategoryViewModel toDoHandler;
         private CategoryViewModel doingHandler;
         private CategoryViewModel doneHandler;
         private ICommand _addSticker;
+        private ICommand _saveCommand;
+        private ICommand _loadCommand;
 
         public ICollectionView ToDoCategory { get; private set; }
         public ICollectionView DoingCategory { get; private set; }
@@ -47,19 +49,26 @@ namespace KanbanProject
             OnPropertyChanged("InputStickerName");}
         }
 
-        public ObservableCollection<PostIt> ToDoList
+        public static ObservableCollection<PostIt> ToDoList
         {
             get { return _toDoList; }
-            set { _toDoList = value; }
+            set
+            {
+                _toDoList = value;
+               // OnPropertyChanged("ToDoList");
+            }
         }
 
-        public ObservableCollection<PostIt> DoingList
+        public static ObservableCollection<PostIt> DoingList
         {
             get { return _doingList; }
-            set { _doingList = value; }
+            set
+            {
+                _doingList = value;
+            }
         }
 
-        public ObservableCollection<PostIt> DoneList
+        public static ObservableCollection<PostIt> DoneList
         {
             get { return _doneList; }
             set { _doneList = value; }
@@ -70,9 +79,21 @@ namespace KanbanProject
             get { return _addSticker; }
         }
 
+        public ICommand Save
+        {
+            get { return _saveCommand;}
+        }
+
+        public ICommand Load
+        {
+            get { return _loadCommand; }
+        }
+
         //constructor
         public MainViewModel()
         {
+            _loadCommand = new LoadCommand();
+            _saveCommand = new SaveCommand();
             _categoryCollection = new ObservableCollection<ObservableCollection<PostIt>>();
             
             CategoryViewModel toDoHandler = new CategoryViewModel("ToDo");
@@ -100,6 +121,54 @@ namespace KanbanProject
             _addSticker = new AddPostItCommand();
         }
 
+        internal class SaveCommand : ICommand
+        {
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                PersistenceHandler.Save(ToDoList, DoingList, DoneList);
+            }
+
+            public event EventHandler CanExecuteChanged;
+        }
+
+        internal class LoadCommand   : ICommand
+        {
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                ToDoList.Clear();
+                List<PostIt> toDoPostits = PersistenceHandler.LoadTodoList();
+                foreach (var postIt in toDoPostits)
+                {
+                    ToDoList.Add(postIt);
+                }
+
+                DoingList.Clear();
+                List<PostIt> doingPostits = PersistenceHandler.LoadDoingList();
+                foreach (var postIt in doingPostits)
+                {
+                    DoingList.Add(postIt);
+                }
+
+                DoneList.Clear();
+                List<PostIt> donePostits = PersistenceHandler.loadDoneList();
+                foreach (var postIt in donePostits)
+                {
+                    DoneList.Add(postIt);
+                }
+            }
+
+            public event EventHandler CanExecuteChanged;
+        }
         public void DragOver(IDropInfo dropInfo)
         {
            // InputStickerName = dropInfo.TargetItem.ToString();
@@ -126,4 +195,6 @@ namespace KanbanProject
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    
 }

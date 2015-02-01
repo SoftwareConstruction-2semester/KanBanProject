@@ -16,8 +16,8 @@
         
         <StackPanel Grid.Row="0" Orientation="Horizontal"> 
             <Button Command="{Binding AddSticker}" CommandParameter="{Binding ToDoList}" Content="Add Sticker" Margin="2"></Button>
-            <Button Content="dsghfg" Margin="2"></Button>
-            <Button Content="dsghfg" Margin="2"></Button>
+            <Button Content="Load" Margin="2" Command="{Binding Load}"></Button>
+            <Button Content="Save" Margin="2" Command="{Binding Save}"></Button>
         </StackPanel>
         
         <Grid Grid.Row="1">
@@ -35,7 +35,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListView VerticalAlignment="Top" Grid.Column="0" ItemsSource="{Binding ToDoList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+        <ListView VerticalAlignment="Top" Grid.Column="0" ItemsSource="{Binding ToDoList, Mode=TwoWay}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -54,7 +54,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListView VerticalAlignment="Top" Grid.Column="1" ItemsSource="{Binding DoingList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+        <ListView VerticalAlignment="Top" Grid.Column="1" ItemsSource="{Binding DoingList, Mode=TwoWay}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -73,7 +73,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListView VerticalAlignment="Top" Grid.Column="2" ItemsSource="{Binding DoneList}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+        <ListView VerticalAlignment="Top" Grid.Column="2" ItemsSource="{Binding DoneList, Mode=TwoWay}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
